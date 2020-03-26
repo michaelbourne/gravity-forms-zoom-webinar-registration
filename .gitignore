@@ -1,0 +1,7 @@
+vendor/bin
+vendor/dealerdirect
+vendor/squizlabs
+vendor/wp-coding-standards
+node_modules
+*.code-workspace
+*.lock
