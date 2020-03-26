@@ -32,6 +32,8 @@ plugins/gravity-forms-zoom-webinar-registration/
 
 ├── gravity-forms-zoom-webinar-registration.php # → Primary plugin file
 
+├── gravity-forms-zoom-registration-sample-form.json # → Sample Gravity Form with all registration fields. Download JSOn file and import into Gravity Forms.
+
 ├── includes/ # → Plugin core PHP classes
 
 │ ├── class-gravityzwr.php # → Main Plugin Class
@@ -39,6 +41,8 @@ plugins/gravity-forms-zoom-webinar-registration/
 │ ├── class-gravityzwr-zoomapi.php # → Remote request abstraction class for Zoom
 
 │ ├── class-gravityzwr-wordpressremote.php # → Remote request class for WordPress
+
+├── languages/ # → Plugin language file
 
 ```
 
@@ -54,7 +58,9 @@ Built in logging via Gravity Forms logger for debugging purposes. Enable debug m
 
 ### Contributing
 
-PRs are welcome from all developers. All I ask is you run `npm install` to download the dev dependencies. All PRs should be well commented and follow the coding standards file in this repo.
+PRs are welcome from all developers. All I ask is you run `composer install` to download the dev dependencies. All PRs should be well commented and follow the coding standards file in this repo.
+
+Translations are welcomed.
 
 ### Debuggers
 
