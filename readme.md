@@ -56,17 +56,25 @@ Built in logging via Gravity Forms logger for debugging purposes. Enable debug m
 
 2. Upload to your WordPress website
 
+3. Optional: save and import the `gravity-forms-zoom-registration-sample-form.json` file from this repo into Gravity Forms as a starter form. All required and optional registration fields are included.
+
+### Usage
+
+After installation, go to Gravity Forms > Settings > Zoom Webinar. here you will enter your [JWT App](https://marketplace.zoom.us/docs/guides/getting-started/app-types/create-jwt-app) token and secret. These apps are free to create, take only 2 minutes, and don't need to be published. Fill in both fields and hit Save.
+
+On the form you would like to use for registrations, go to Settings > Zoom Webinar. Add a new feed. Give it a name, enter your Meeting ID, and match the registration fields on the left to the form fields on the right. First name, last name, and email are rquired fields. The other fields are optional.
+
 ### Contributing
 
 PRs are welcome from all developers. All I ask is you run `composer install` to download the dev dependencies. All PRs should be well commented and follow the coding standards file in this repo.
 
-Translations are welcomed.
+Translations are welcomed. Starter .po file is included in this repo for you to send a PR with your .mo file for WordPress. Text domain is `gravity-zwr`.
 
 ### Debuggers
 
 Plugin comes with [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 
-PHP_CodeSniffer needs to be installed under `/usr/local/bin/phpcs` with [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
+PHP_CodeSniffer needs to be installed with [WordPress-Coding-Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards)
 
 ## Notes
 

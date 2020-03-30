@@ -11,13 +11,13 @@
  * @wordpress-plugin
  * Plugin Name: Gravity Forms Zoom Webinar Registration
  * Description: Register attendees in your Zoom Webinar through a Gravity Form
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Michael Bourne
  * Author URI: https://5forests.com
  * Requires at least: 5.3
  * Tested up to: 5.3
- * Stable tag: 1.0.0
- * Requires PHP: 7.2
+ * Stable tag: 1.0.1
+ * Requires PHP: 7.1
  * License: GPL3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
  * Text Domain: gravity-zwr
@@ -26,7 +26,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Wednesday, March 25th 2020, 7:00:11 pm
+ * Last Modified: Monday, March 30th 2020, 2:03:15 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 defined( 'GRAVITYZWR_ROOT' ) || define( 'GRAVITYZWR_ROOT', plugin_dir_path( __FILE__ ) );
 defined( 'GRAVITYZWR_URI' ) || define( 'GRAVITYZWR_URI', plugin_dir_url( __FILE__ ) );
-defined( 'GRAVITYZWR_VERSION' ) || define( 'GRAVITYZWR_VERSION', '1.0.0' );
+defined( 'GRAVITYZWR_VERSION' ) || define( 'GRAVITYZWR_VERSION', '1.0.1' );
 defined( 'GRAVITYZWR_ZOOMAPIURL' ) || define( 'GRAVITYZWR_ZOOMAPIURL', 'https://api.zoom.us/v2' );
 
 add_action( 'gform_loaded', array( 'GravityZWR_Bootstrap', 'load' ), 5 );
@@ -80,8 +80,4 @@ class GravityZWR_Bootstrap {
         GFAddOn::register( 'GravityZWR' );
     }
 
-}
-
-function gf_simple_addon() {
-    return GravityZWR::get_instance();
 }

@@ -13,11 +13,15 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Thursday, March 26th 2020, 11:46:23 am
+ * Last Modified: Monday, March 30th 2020, 2:07:39 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
 
 GFForms::include_feed_addon_framework();
 
@@ -43,7 +47,7 @@ class GravityZWR extends GFFeedAddOn {
 	 *
 	 * @var string $_min_gravityforms_version
 	 */
-	protected $_min_gravityforms_version = '1.9';
+	protected $_min_gravityforms_version = '2.2';
 
 	/**
 	 * Plugin Slug

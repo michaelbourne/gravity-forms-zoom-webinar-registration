@@ -13,11 +13,15 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Wednesday, March 25th 2020, 3:41:27 pm
+ * Last Modified: Monday, March 30th 2020, 2:07:50 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	return;
+}
 
  /**
   * GravityZWR_WordPressRemote Class
