@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Monday, March 30th 2020, 2:07:39 pm
+ * Last Modified: Monday, March 30th 2020, 2:15:25 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -166,13 +166,6 @@ class GravityZWR extends GFFeedAddOn {
 		parent::uninstall();
 
 		GFCache::delete( 'zwr_plugin_settings' );
-	}
-
-	/**
-	 * Creates a custom page for this add-on.
-	 */
-	public function plugin_page() {
-		echo 'This page appears in the Forms menu';
 	}
 
 	/**

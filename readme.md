@@ -64,6 +64,10 @@ After installation, go to Gravity Forms > Settings > Zoom Webinar. here you will
 
 On the form you would like to use for registrations, go to Settings > Zoom Webinar. Add a new feed. Give it a name, enter your Meeting ID, and match the registration fields on the left to the form fields on the right. First name, last name, and email are rquired fields. The other fields are optional.
 
+#### Payments
+
+This add-on has support for "delayed payment support" through the Gravity Forms PayPal add-on. If desired, you can charge for your registrations via PayPal, and only process the Zoom Registration feed upon successful payment. [Read more here.](https://docs.gravityforms.com/setting-up-paypal-payments-standard/)
+
 ### Contributing
 
 PRs are welcome from all developers. All I ask is you run `composer install` to download the dev dependencies. All PRs should be well commented and follow the coding standards file in this repo.
