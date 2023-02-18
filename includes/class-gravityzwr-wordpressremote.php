@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Monday, March 30th 2020, 2:07:50 pm
+ * Last Modified: Friday, February 17th 2023, 7:02:39 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -53,35 +53,35 @@ class GravityZWR_WordPressRemote {
 	/**
 	 * Request response
 	 *
-	 * @var [type]
+	 * @var array|WP_Error
 	 */
 	protected $response;
 
 	/**
 	 * Body of the response
 	 *
-	 * @var [type]
+	 * @var string
 	 */
 	protected $body;
 
 	/**
 	 * Headers of the response
 	 *
-	 * @var [type]
+	 * @var array
 	 */
 	protected $headers;
 
 	/**
 	 * Response Code from the Request
 	 *
-	 * @var [type]
+	 * @var int|string
 	 */
 	protected $response_code;
 
 	/**
 	 * Response Message from the Request
 	 *
-	 * @var [type]
+	 * @var string
 	 */
 	protected $response_message;
 
@@ -92,7 +92,7 @@ class GravityZWR_WordPressRemote {
 	 * @param array  $arguments Request Arguements.
 	 * @param string $method Request Method.
 	 */
-	public function __construct( $url, $arguments = array(), $method = 'get' ) {
+	public function __construct( string $url, array $arguments = array(), string $method = 'get' ) {
 		$this->method              = strtoupper( $method );
 		$this->url                 = $url;
 		$this->arguments           = $arguments;
@@ -115,19 +115,19 @@ class GravityZWR_WordPressRemote {
 	/**
 	 * Get the body
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_body() {
+	public function get_body(): string {
 		return $this->body;
 	}
 
 	/**
 	 * Get the headers
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function get_headers() {
-		return $this->headers;
+	public function get_headers(): array {
+		return (array) $this->headers;
 	}
 
 	/**
@@ -135,8 +135,8 @@ class GravityZWR_WordPressRemote {
 	 *
 	 * @return string
 	 */
-	public function get_response_code() {
-		return $this->response_code;
+	public function get_response_code(): int {
+		return (int) $this->response_code;
 	}
 
 	/**
@@ -144,14 +144,14 @@ class GravityZWR_WordPressRemote {
 	 *
 	 * @return string
 	 */
-	public function get_response_message() {
+	public function get_response_message(): string {
 		return $this->response_message;
 	}
 
 	/**
 	 * Get the whole response
 	 *
-	 * @return mixed
+	 * @return array|WP_Error
 	 */
 	public function get_response() {
 		return $this->response;
@@ -160,9 +160,9 @@ class GravityZWR_WordPressRemote {
 	/**
 	 * If the request was a success
 	 *
-	 * @return mixed
+	 * @return bool
 	 */
-	public function is_success() {
+	public function is_success(): bool {
 		// phpcs:ignore
 		if ( '200' == (string) $this->response_code ) {
 			return true;

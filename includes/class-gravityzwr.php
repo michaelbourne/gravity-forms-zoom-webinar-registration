@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Monday, March 30th 2020, 2:15:25 pm
+ * Last Modified: Friday, February 17th 2023, 7:19:47 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -178,16 +178,17 @@ class GravityZWR extends GFFeedAddOn {
 		// Get the plugin settings.
 		$settings = $this->get_plugin_settings();
 
-		// Access a specific setting e.g. an api key
-		$key = rgar( $settings, 'zoomapikey' );
-		$sec = rgar( $settings, 'zoomapisecret' );
+		// New OAuth settings fields. Check if any of the settings fields are defined as constants first.
+		$account = defined( 'GRAVITYZWR_ACCOUNT_ID' ) ? GRAVITYZWR_ACCOUNT_ID : rgar( $settings, 'zoomaccountid' );
+		$client  = defined( 'GRAVITYZWR_CLIENT_ID' ) ? GRAVITYZWR_CLIENT_ID : rgar( $settings, 'zoomclientid' );
+		$secret  = defined( 'GRAVITYZWR_CLIENT_SECRET' ) ? GRAVITYZWR_CLIENT_SECRET : rgar( $settings, 'zoomclientsecret' );
 
-		if ( empty( $key ) || empty( $sec ) ) {
+		// If any settings fields are blank, return false.
+		if ( empty( $account ) || empty( $client ) || empty( $secret ) ) {
 			return false;
 		} else {
 			return true;
 		}
-
 	}
 
 	/**
@@ -210,28 +211,64 @@ class GravityZWR extends GFFeedAddOn {
 	 * @return array
 	 */
 	public function plugin_settings_fields() {
+
+		$description = '<p>' .
+			sprintf(
+				esc_html__( 'Zoom Webinars make it easy to host your virtual events. Use Gravity Forms to create new attendees in your webinars, without the need of 3rd party services. You will need to %1$screate your own Server OAuth private app%2$s to make this add-on work.', 'gravity-zwr' ),
+				'<a href="https://marketplace.zoom.us/docs/guides/build/server-to-server-oauth-app/" target="_blank">', '</a>'
+			)
+			. '</p>';
+
+		// If settings constants are define, add a notice to the settings page.
+		if ( defined( 'GRAVITYZWR_ACCOUNT_ID' ) || defined( 'GRAVITYZWR_CLIENT_ID' ) || defined( 'GRAVITYZWR_CLIENT_SECRET' ) ) {
+			$description .= '<div class="notice notice-warning inline"><p>' .
+				sprintf(
+					esc_html__( 'You have defined one or more of the following constants in your wp-config.php file: %1$sGRAVITYZWR_ACCOUNT_ID%2$s, %1$sGRAVITYZWR_CLIENT_ID%2$s, %1$sGRAVITYZWR_CLIENT_SECRET%2$s. These constants will override the settings below.', 'gravity-zwr' ),
+					'<code>', '</code>'
+				)
+				. '</p></div>';
+		}
 		return array(
 			array(
 				'title'       => esc_html__( 'Zoom Webinar Settings', 'gravity-zwr' ),
-				'description' => '<p>' .
-					sprintf(
-						esc_html__( 'Zoom Webinars make it easy to host your virtual events. Use Gravity Forms to create new attendees in your webinars, without the need of 3rd party services. You will need to %1$screate your own JWT private app%2$s to make this add-on work.', 'gravity-zwr' ),
-						'<a href="https://marketplace.zoom.us/docs/guides/getting-started/app-types/create-jwt-app" target="_blank">', '</a>'
-					)
-					. '</p>',
+				'description' => $description,
 				'fields'      => array(
 					array(
+						'name'              => 'zoomaccountid',
+						'tooltip'           => esc_html__( 'This is the Account ID provided in your Server-to-Server OAuth app.', 'gravity-zwr' ),
+						'label'             => esc_html__( 'Zoom Account ID', 'gravity-zwr' ),
+						'type'              => 'text',
+						'class'             => 'medium',
+						'feedback_callback' => array( $this, 'is_valid_setting' ),
+					),
+					array(
+						'name'              => 'zoomclientid',
+						'tooltip'           => esc_html__( 'This is the Client ID provided in your Server-to-Server OAuth app.', 'gravity-zwr' ),
+						'label'             => esc_html__( 'Zoom Client ID', 'gravity-zwr' ),
+						'type'              => 'text',
+						'class'             => 'medium',
+						'feedback_callback' => array( $this, 'is_valid_setting' ),
+					),
+					array(
+						'name'              => 'zoomclientsecret',
+						'tooltip'           => esc_html__( 'This is the Client Secret provided in your Server-to-Server OAuth app.', 'gravity-zwr' ),
+						'label'             => esc_html__( 'Zoom Client Secret', 'gravity-zwr' ),
+						'type'              => 'text',
+						'class'             => 'medium',
+						'feedback_callback' => array( $this, 'is_valid_setting' ),
+					),
+					array(
 						'name'              => 'zoomapikey',
-						'tooltip'           => esc_html__( 'This is the JWT app API key from your private app', 'gravity-zwr' ),
-						'label'             => esc_html__( 'Zoom API Key', 'gravity-zwr' ),
+						'tooltip'           => esc_html__( '(Depreciated) This is the JWT app API key from your private app. Please change to an OAuth app as soon as possible. ', 'gravity-zwr' ),
+						'label'             => esc_html__( 'Zoom API Key (Depreciated)', 'gravity-zwr' ),
 						'type'              => 'text',
 						'class'             => 'medium',
 						'feedback_callback' => array( $this, 'is_valid_setting' ),
 					),
 					array(
 						'name'              => 'zoomapisecret',
-						'tooltip'           => esc_html__( 'This is the JWT app secret key from your private app', 'gravity-zwr' ),
-						'label'             => esc_html__( 'Zoom API Secret', 'gravity-zwr' ),
+						'tooltip'           => esc_html__( '(Depreciated) This is the JWT app secret key from your private app. Please change to an OAuth app as soon as possible. ', 'gravity-zwr' ),
+						'label'             => esc_html__( 'Zoom API Secret (Depreciated)', 'gravity-zwr' ),
 						'type'              => 'text',
 						'class'             => 'medium',
 						'feedback_callback' => array( $this, 'is_valid_setting' ),
@@ -415,11 +452,13 @@ class GravityZWR extends GFFeedAddOn {
 
 		$meetingtype = in_array( $feed['meta']['meetingtype'], [ 'webinars', 'meetings' ], true ) ? $feed['meta']['meetingtype'] : 'webinars';
 
-		$settings = $this->get_plugin_settings();
-
-		if ( empty( $settings ) ) {
-			$this->add_feed_error( esc_html__( 'Aborted: Empty Plugin Settings', 'gravity-zwr' ), $feed, $entry, $form );
-			return $entry;
+		// Check if OAuth settings fields are defined in constants.
+		if ( ! defined( 'GRAVITYZWR_ACCOUNT_ID' ) && ! defined( 'GRAVITYZWR_CLIENT_ID' ) && ! defined( 'GRAVITYZWR_CLIENT_SECRET' ) ) {
+			$settings = $this->get_plugin_settings();
+			if ( empty( $settings ) ) {
+				$this->add_feed_error( esc_html__( 'Aborted: Empty Plugin Settings', 'gravity-zwr' ), $feed, $entry, $form );
+				return $entry;
+			}
 		}
 
 		// Retrieve the name => value pairs for all fields mapped in the 'mappedFields' field map.
@@ -483,12 +522,22 @@ class GravityZWR extends GFFeedAddOn {
 	/**
 	 * The feedback callback for the settings fields.
 	 *
-	 * @param string $value The setting value.
+	 * @param string $value The setting value for valid characters used by Zoom OAuth credentials.
 	 *
 	 * @return bool
 	 */
-	public function is_valid_setting( $value ) {
-		return strlen( $value ) > 10;
+	public function is_valid_setting( $value ): bool {
+
+		// If the value is empty, return true.
+		if ( empty( $value ) ) {
+			return true;
+		}
+
+		// define the allowed characters in a regular expression
+		$allowed_regex = '/^[a-zA-Z0-9_-]+$/';
+
+		// use preg_match function to check if the input matches the allowed pattern
+		return preg_match( $allowed_regex, $value );
 	}
 
 	/**
