@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Friday, February 17th 2023, 7:19:47 pm
+ * Last Modified: Friday, October 4th 2024, 2:18:52 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -257,22 +257,6 @@ class GravityZWR extends GFFeedAddOn {
 						'class'             => 'medium',
 						'feedback_callback' => array( $this, 'is_valid_setting' ),
 					),
-					array(
-						'name'              => 'zoomapikey',
-						'tooltip'           => esc_html__( '(Depreciated) This is the JWT app API key from your private app. Please change to an OAuth app as soon as possible. ', 'gravity-zwr' ),
-						'label'             => esc_html__( 'Zoom API Key (Depreciated)', 'gravity-zwr' ),
-						'type'              => 'text',
-						'class'             => 'medium',
-						'feedback_callback' => array( $this, 'is_valid_setting' ),
-					),
-					array(
-						'name'              => 'zoomapisecret',
-						'tooltip'           => esc_html__( '(Depreciated) This is the JWT app secret key from your private app. Please change to an OAuth app as soon as possible. ', 'gravity-zwr' ),
-						'label'             => esc_html__( 'Zoom API Secret (Depreciated)', 'gravity-zwr' ),
-						'type'              => 'text',
-						'class'             => 'medium',
-						'feedback_callback' => array( $this, 'is_valid_setting' ),
-					),
 				),
 			),
 		);
@@ -318,13 +302,13 @@ class GravityZWR extends GFFeedAddOn {
 					),
 					array(
 						'name'     => 'zoomWebinarID',
-						'label'    => esc_html__( 'Webinar ID', 'gravity-zwr' ),
+						'label'    => esc_html__( 'Webinar/Meeting ID', 'gravity-zwr' ),
 						'type'     => 'text',
 						'required' => true,
 						'tooltip'  => sprintf(
 							'<h6>%s</h6>%s',
-							esc_html__( 'Webinar ID', 'gravity-zwr' ),
-							esc_html__( 'Add the Webinar ID. You will find this in your Zoom.us webinar setup.', 'gravity-zwr' )
+							esc_html__( 'Webinar/Meeting ID', 'gravity-zwr' ),
+							esc_html__( 'Add the Webinar or Meeting ID. You will find this in your Zoom.us webinar or meeting setup.', 'gravity-zwr' )
 						),
 					),
 				),
@@ -443,14 +427,13 @@ class GravityZWR extends GFFeedAddOn {
 		// Log that we are processing feed.
 		$this->log_debug( __METHOD__ . '(): Processing feed.' );
 
-		$webinar = preg_replace( '/[^0-9]/', '', $feed['meta']['zoomWebinarID'] );
-
-		if ( empty( $webinar ) ) {
-			$this->add_feed_error( esc_html__( 'Aborted: Empty Webinar ID', 'gravity-zwr' ), $feed, $entry, $form );
-			return $entry;
-		}
-
 		$meetingtype = in_array( $feed['meta']['meetingtype'], [ 'webinars', 'meetings' ], true ) ? $feed['meta']['meetingtype'] : 'webinars';
+		$meeting_id = preg_replace( '/[^0-9]/', '', $feed['meta']['zoomWebinarID'] );
+
+    if ( empty( $meeting_id ) ) {
+        $this->add_feed_error( esc_html__( 'Aborted: Empty Webinar/Meeting ID', 'gravity-zwr' ), $feed, $entry, $form );
+        return $entry;
+    }
 
 		// Check if OAuth settings fields are defined in constants.
 		if ( ! defined( 'GRAVITYZWR_ACCOUNT_ID' ) && ! defined( 'GRAVITYZWR_CLIENT_ID' ) && ! defined( 'GRAVITYZWR_CLIENT_SECRET' ) ) {
@@ -463,15 +446,6 @@ class GravityZWR extends GFFeedAddOn {
 
 		// Retrieve the name => value pairs for all fields mapped in the 'mappedFields' field map.
 		$field_map = $this->get_field_map_fields( $feed, 'mappedFields' );
-
-		// Get mapped email address.
-		$email = $this->get_field_value( $form, $entry, $field_map['email'] );
-
-		// If email address is invalid, log error and return.
-		if ( GFCommon::is_invalid_or_empty_email( $email ) ) {
-			$this->add_feed_error( esc_html__( 'A valid Email address must be provided.', 'gravity-zwr' ), $feed, $entry, $form );
-			return $entry;
-		}
 
 		// Loop through the fields from the field map setting building an array of values to be passed to the third-party service.
 		$merge_vars = array();
@@ -500,8 +474,17 @@ class GravityZWR extends GFFeedAddOn {
 			return $entry;
 		}
 
-		$remote_request = new GravityZWR_ZOOMAPI( GRAVITYZWR_ZOOMAPIURL . '/' . $meetingtype . '/' . $webinar . '/registrants', array( 'body' => wp_json_encode( $merge_vars ) ), 'post' );
-		$remote_request->run();
+		// Ensure required fields are present
+		if ( ! isset( $merge_vars['email'] ) || ! isset( $merge_vars['first_name'] ) ) {
+			$this->add_feed_error( esc_html__( 'Aborted: Missing required fields (email, first_name)', 'gravity-zwr' ), $feed, $entry, $form );
+			return $entry;
+		}
+
+    // Construct the API endpoint URL
+    $api_endpoint = GRAVITYZWR_ZOOMAPIURL . '/' . $meetingtype . '/' . $meeting_id . '/registrants';
+
+    $remote_request = new GravityZWR_ZOOMAPI( $api_endpoint, array( 'body' => wp_json_encode( $merge_vars ) ), 'post' );
+    $remote_request->run();
 
 		if ( ! $remote_request->is_success() ) {
 			// Log that registration failed.
@@ -569,7 +552,7 @@ class GravityZWR extends GFFeedAddOn {
 					'type' 		  => 'name',
 					'name'		  => 'Last Name',
 					'description' => 'Registrant\'s Last Name.',
-					'required'	  => true,
+					'required'	  => false,
 				),
 			'email' 				   => array(
 					'type' 		  => 'email',

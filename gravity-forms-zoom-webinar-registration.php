@@ -11,12 +11,12 @@
  * @wordpress-plugin
  * Plugin Name: Gravity Forms Zoom Webinar Registration
  * Description: Register attendees in your Zoom Webinar through a Gravity Form
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Michael Bourne
  * Author URI: https://5forests.com
  * Requires at least: 5.4
- * Tested up to: 6.1.1
- * Stable tag: 1.2.0
+ * Tested up to: 6.6.2
+ * Stable tag: 1.3.0
  * Requires PHP: 8.0
  * License: GPL3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -26,10 +26,10 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Friday, February 17th 2023, 3:52:08 pm
+ * Last Modified: Friday, October 4th 2024, 2:04:31 pm
  * Modified By: Michael Bourne
  * -----
- * Copyright (C) 2020-2023 Michael Bourne
+ * Copyright (C) 2020-2024 Michael Bourne
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 defined( 'GRAVITYZWR_ROOT' ) || define( 'GRAVITYZWR_ROOT', plugin_dir_path( __FILE__ ) );
 defined( 'GRAVITYZWR_URI' ) || define( 'GRAVITYZWR_URI', plugin_dir_url( __FILE__ ) );
-defined( 'GRAVITYZWR_VERSION' ) || define( 'GRAVITYZWR_VERSION', '1.2.0' );
+defined( 'GRAVITYZWR_VERSION' ) || define( 'GRAVITYZWR_VERSION', '1.3.0' );
 defined( 'GRAVITYZWR_ZOOMAPIURL' ) || define( 'GRAVITYZWR_ZOOMAPIURL', 'https://api.zoom.us/v2' );
 
 add_action( 'gform_loaded', array( 'GravityZWR_Bootstrap', 'load' ), 5 );

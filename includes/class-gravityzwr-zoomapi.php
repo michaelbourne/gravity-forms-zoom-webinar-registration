@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Friday, February 17th 2023, 7:56:22 pm
+ * Last Modified: Friday, October 4th 2024, 2:10:40 pm
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -35,12 +35,12 @@ class GravityZWR_ZOOMAPI extends GravityZWR_WordPressRemote {
 		// Get bearer token from transients.
 		$token = get_transient( 'gravityzwr_zoom_token' );
 
-		// If transient not set or expired, send a POST request to the Zoom API to get a new token.
+		// If transient not set or expired, send a POST request to the Zoom API to get a new OAuth token.
 		if ( false === $token ) {
 
 			$options = GravityZWR::get_zoom_settings_keys();
 
-			// Set variables from contants if set, or efault to options array if not.
+			// Set variables from contants if set, or default to options array if not.
 			$account = defined( 'GRAVITYZWR_ACCOUNT_ID' ) ? GRAVITYZWR_ACCOUNT_ID : $options['zoomaccountid'];
 			$client  = defined( 'GRAVITYZWR_CLIENT_ID' ) ? GRAVITYZWR_CLIENT_ID : $options['zoomclientid'];
 			$secret  = defined( 'GRAVITYZWR_CLIENT_SECRET' ) ? GRAVITYZWR_CLIENT_SECRET : $options['zoomclientsecret'];
@@ -52,6 +52,10 @@ class GravityZWR_ZOOMAPI extends GravityZWR_WordPressRemote {
 						'Host'          => 'zoom.us',
 						'Authorization' => 'Basic ' . base64_encode( $client . ':' . $secret ), // phpcs:ignore
 						'Content-type'  => 'application/x-www-form-urlencoded',
+					),
+					'body' => array(
+							'grant_type' => 'account_credentials',
+							'account_id' => $account,
 					),
 				)
 			);
