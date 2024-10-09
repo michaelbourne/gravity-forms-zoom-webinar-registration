@@ -13,7 +13,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Friday, October 4th 2024, 2:18:52 pm
+ * Last Modified: Wednesday, October 9th 2024, 10:02:46 am
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020 Michael Bourne
@@ -23,11 +23,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
+/**
+ * @var GFForms Gravity Forms class
+ */
 GFForms::include_feed_addon_framework();
 
 /**
  * GravityZWR Class is an extension of the Gravity Forms Add-On Class.
  *
+ * @var GFFeedAddOn Gravitry Forms Feed AddOn Class
+ * @var GFAddOn Gravity Forms AddOn Class
+ * @var GFCache Gravity Forms Cache class
  * @uses GFAddOn::log_error()
  * @uses GFAddOn::log_debug()
  * @uses GFAddOn::get_plugin_settings()
@@ -159,12 +165,10 @@ class GravityZWR extends GFFeedAddOn {
 	}
 
 	/**
-	 * Remove unneeded settings.
+	 * Remove settings when the user uninstalls the addon.
 	 */
 	public function uninstall() {
-
 		parent::uninstall();
-
 		GFCache::delete( 'zwr_plugin_settings' );
 	}
 
@@ -197,12 +201,10 @@ class GravityZWR extends GFFeedAddOn {
 	 * @return array
 	 */
 	public function feed_list_columns() {
-
 		return array(
 			'feedName'      => esc_html__( 'Feed Name', 'gravity-zwr' ),
 			'zoomWebinarID' => esc_html__( 'Meeting ID', 'gravity-zwr' ),
 		);
-
 	}
 
 	/**
@@ -402,7 +404,7 @@ class GravityZWR extends GFFeedAddOn {
 					'label'      => $config['name'],
 					'required'   => $config['required'],
 					'field_type' => $field_type,
-					'tooltip'	 => $config['description'],
+					'tooltip'    => $config['description'],
 				);
 
 			}
@@ -496,7 +498,6 @@ class GravityZWR extends GFFeedAddOn {
 		}
 
 		return $entry;
-
 	}
 
 
@@ -528,9 +529,12 @@ class GravityZWR extends GFFeedAddOn {
 	 *
 	 * @return array
 	 */
-	public static function get_zoom_settings_keys() {
+	public function get_zoom_settings_keys() {
 
 		$plugin_settings = GFCache::get( 'zwr_plugin_settings' );
+		if ( empty( $plugin_settings ) ) {
+			$plugin_settings = $this->get_plugin_settings();
+		}
 		return $plugin_settings;
 	}
 
@@ -542,106 +546,104 @@ class GravityZWR extends GFFeedAddOn {
 	public function get_list_merge_fields() {
 
 		$fields = array(
-			'first_name' 			   => array(
-					'type' 		  => 'name',
-					'name'		  => 'First Name',
+			'first_name' => array(
+					'type'        => 'name',
+					'name'        => 'First Name',
 					'description' => 'Registrant\'s First Name.',
-					'required'	  => true,
+					'required'    => true,
 				),
-			'last_name' 			   => array(
-					'type' 		  => 'name',
-					'name'		  => 'Last Name',
+			'last_name' => array(
+					'type'        => 'name',
+					'name'        => 'Last Name',
 					'description' => 'Registrant\'s Last Name.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'email' 				   => array(
-					'type' 		  => 'email',
-					'name'		  => 'Email',
+			'email' => array(
+					'type'        => 'email',
+					'name'        => 'Email',
 					'description' => 'Registrant\'s Email.',
-					'required'	  => true,
+					'required'    => true,
 				),
-			'address' 				   => array(
-					'type' 		  => 'address',
-					'name'		  => 'Address',
+			'address' => array(
+					'type'        => 'address',
+					'name'        => 'Address',
 					'description' => 'Registrant\'s address.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'city' 					   => array(
-					'type' 		  => 'address',
-					'name'		  => 'City',
+			'city' => array(
+					'type'        => 'address',
+					'name'        => 'City',
 					'description' => 'Registrant\'s city.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'country' 				   => array(
-					'type' 		  => 'address',
-					'name'		  => 'Country',
+			'country' => array(
+					'type'        => 'address',
+					'name'        => 'Country',
 					'description' => 'Registrant\'s country.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'zip'					   => array(
-					'type' 		  => 'address',
-					'name'		  => 'ZIP',
+			'zip' => array(
+					'type'        => 'address',
+					'name'        => 'ZIP',
 					'description' => 'Registrant\'s Zip/Postal Code.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'state' 				   => array(
-					'type' 		  => 'address',
-					'name'		  => 'State',
+			'state' => array(
+					'type'        => 'address',
+					'name'        => 'State',
 					'description' => 'Registrant\'s State/Province.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'phone' 				   => array(
-					'type' 		  => 'phone',
-					'name'		  => 'Phone',
+			'phone' => array(
+					'type'        => 'phone',
+					'name'        => 'Phone',
 					'description' => 'Registrant\'s Phone number.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'industry' 				   => array(
-					'type' 		  => 'string',
-					'name'		  => 'Industry',
+			'industry' => array(
+					'type'        => 'string',
+					'name'        => 'Industry',
 					'description' => 'Registrant\'s Industry.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'org' 					   => array(
-					'type' 		  => 'string',
-					'name'		  => 'Organization',
+			'org' => array(
+					'type'        => 'string',
+					'name'        => 'Organization',
 					'description' => 'Registrant\'s Organization.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'job_title' 			   => array(
-					'type' 		  => 'string',
-					'name'		  => 'Job Title',
+			'job_title' => array(
+					'type'        => 'string',
+					'name'        => 'Job Title',
 					'description' => 'Registrant\'s job title.',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'purchasing_time_frame'    => array(
-					'type' 		  => 'select',
-					'name'		  => 'Purchase Time Frame',
+			'purchasing_time_frame' => array(
+					'type'        => 'select',
+					'name'        => 'Purchase Time Frame',
 					'description' => 'This field can be included to gauge interest of webinar attendees towards buying your product or service.<br>Purchasing Time Frame:<br>`Within a month`<br>`1-3 months`<br>`4-6 months`<br>`More than 6 months`<br>`No timeframe`',
-					'required'	  => false,
+					'required'    => false,
 				),
 			'role_in_purchase_process' => array(
-					'type' 	  	  => 'select',
-					'name'		  => 'Role in Purchase',
+					'type'        => 'select',
+					'name'        => 'Role in Purchase',
 					'description' => 'Role in Purchase Process:<br>`Decision Maker`<br>`Evaluator/Recommender`<br>`Influencer`<br>`Not involved` ',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'no_of_employees'		   => array(
-					'type' 		  => 'select',
-					'name'		  => 'Number of Employees',
+			'no_of_employees' => array(
+					'type'        => 'select',
+					'name'        => 'Number of Employees',
 					'description' => 'Number of Employees:<br>`1-20`<br>`21-50`<br>`51-100`<br>`101-500`<br>`500-1,000`<br>`1,001-5,000`<br>`5,001-10,000`<br>`More than 10,000`',
-					'required'	  => false,
+					'required'    => false,
 				),
-			'comments' 				   => array(
-					'type' 		  => 'text',
-					'name'		  => 'Comments',
+			'comments' => array(
+					'type'        => 'text',
+					'name'        => 'Comments',
 					'description' => 'A field that allows registrants to provide any questions or comments that they might have.',
-					'required'	  => false,
+					'required'    => false,
 				),
 		);
 
 		return $fields;
-
 	}
-
 }
