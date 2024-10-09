@@ -1,12 +1,22 @@
 # Gravity Forms Zoom Webinar Registration
+* Contributors: michaelbourne
+* Author: Michael Bourne
+* Tags: zoom, gravity forms, webinar
+* Requires at least: 5.0
+* Tested up to: 6.6.2
+* Stable tag: 1.3.0
+* License: GPLv3 or later
+* License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 **Register attendees in your Zoom Webinar through a Gravity Form**
+
+## Description
 
 This plugin adds a "Zoom Registration" feed to your Gravity Forms. Although it was created specifically for the Webinars feature on Zoom, it will work with normal Meetings.
 
 Updated in 2023 to work with OAuth.
 
-### Requirements
+## Requirements
 
  1. A WordPress.org based website
  2. The [Gravity Forms](https://www.gravityforms.com/) plugin
@@ -16,7 +26,7 @@ Updated in 2023 to work with OAuth.
  6. WordPress version 5+
  7. PHP version 8.0+
 
-### License
+## License
 
 Licensed with [GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/) 
 
@@ -26,7 +36,7 @@ Permissions of this strong copyleft license are conditioned on making available 
 
   
 
-## Plugin
+## Plugin Info
 
 ```shell
 
@@ -97,3 +107,17 @@ PHP_CodeSniffer needs to be installed with [WordPress-Coding-Standards](https://
 ## Notes
 
 Always install and test new plugins on a staging site or development site prior to pushing to production. Support is not guaranteed for this plugin.
+
+## Copyright
+
+Gravity Forms Zoom Webinar Registration is a plugin for WordPress that enables you to add Commerce7 ecommerce integration into your site.
+
+Copyright (c) 2020-2024 Michael Bourne & URSA6.
+
+The Gravity Forms Zoom Webinar Registration Plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>
+
+You can contact me at michael@ursa6.com
