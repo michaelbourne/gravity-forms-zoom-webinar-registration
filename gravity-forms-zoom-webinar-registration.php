@@ -14,7 +14,7 @@
  * Version: 1.3.0
  * Author: Michael Bourne
  * Author URI: https://5forests.com
- * Requires at least: 5.4
+ * Requires at least: 6.0
  * Tested up to: 6.6.2
  * Stable tag: 1.3.0
  * Requires PHP: 8.0
@@ -26,7 +26,7 @@
  * Created Date: Friday March 25th 2020
  * Author: Michael Bourne
  * -----
- * Last Modified: Friday, October 4th 2024, 2:04:31 pm
+ * Last Modified: Wednesday, October 9th 2024, 10:02:51 am
  * Modified By: Michael Bourne
  * -----
  * Copyright (C) 2020-2024 Michael Bourne
@@ -58,6 +58,7 @@ add_action( 'gform_loaded', array( 'GravityZWR_Bootstrap', 'load' ), 5 );
 
 /**
  * GravityZWR_Bootstrap Class
+ * @var GFAddOn Gravity Forms AddOn Class
  */
 class GravityZWR_Bootstrap {
 
@@ -76,5 +77,4 @@ class GravityZWR_Bootstrap {
 
         GFAddOn::register( 'GravityZWR' );
     }
-
 }
