@@ -10,6 +10,10 @@
 
 **Register attendees in your Zoom Webinar through a Gravity Form**
 
+Now hosted on the WP repo by @apos37: https://wordpress.org/plugins/gravity-zwr/
+
+This repo will no longer be mainted, please use the published plugin.
+
 ## Description
 
 This plugin adds a "Zoom Registration" feed to your Gravity Forms. Although it was created specifically for the Webinars feature on Zoom, it will work with normal Meetings.
